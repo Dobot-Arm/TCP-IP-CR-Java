@@ -16,11 +16,11 @@
 2. Dashboard.java DobotMove.java Feedback.java ：according to the robot TCP / IP remote control scheme（ https://github.com/Dobot-Arm/TCP-IP-Protocol ）self modification.
 
 ## 3. Run Demo
-1、需在IntelliJ IDEA 运行TCP-IP Java项目。  
+1、you need to run the TCP-IP java project in IntelliJ idea.
 
 ![Demo](./readme-image/Demo_main.png)  
 
-2、需配置Resource目录下的fastjson-1.2.47.jar。  
+2、you need to configure fastjson-1.2.47 in the resource directory jar.
 
 ![jar1](./readme-image/fastjson_jar1.png)  
 
