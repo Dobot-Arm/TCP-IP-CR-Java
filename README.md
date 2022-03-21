@@ -26,6 +26,10 @@ English version of the README -> please [click here](./README-EN.md)
 
 ![jar2](./readme-image/fastjson-jar2.png)
 
+3、Demo运行后的主界面：  
+
+![main_panel](./readme-image/main_panel.png)
+
 ## 4. 测试环境
 - language:   
 java version "1.8.0_202"  

@@ -26,6 +26,10 @@
 
 ![jar2](./readme-image/fastjson-jar2.png)
 
+3、Main interface after demo running：  
+
+![main_panel](./readme-image/main_panel.png)
+
 ## 4. Test environment
 - language:   
 java version "1.8.0_202"  
