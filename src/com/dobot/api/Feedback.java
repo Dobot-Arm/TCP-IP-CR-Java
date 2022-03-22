@@ -1,14 +1,17 @@
 package com.dobot.api;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.util.Arrays;
 
 
 public class Feedback {
-    private Socket socketClient = new Socket();
+    public Socket socketClient = new Socket();
 
     private static String SEND_ERROR = ":send error";
 
     Thread thread;
+
 
     private String ip = "";
 
@@ -23,15 +26,21 @@ public class Feedback {
             this.ip = ip;
             this.port = port;
 
-            socketClient = new Socket(ip,port);
-            socketClient.setSoTimeout(15000);
 
-            thread = new Thread(){
+            thread= new Thread(){
                 @Override
                 public void run(){
-                    OnRecvData();
+                    try {
+                        onRecvData();
+                        return;
+                    } catch (Exception e) {
+                        Logger.instance.log(e.getMessage());
+                    }
+
                 }
             };
+
+
             thread.start();
             Logger.instance.log("Feedback connect success");
             bOk = true;
@@ -233,13 +242,6 @@ public class Feedback {
         this.Reserved7 = new byte[24];
     }
 
-    /// <summary>
-    /// 连接设备
-    /// </summary>
-    /// <param name="strIp">设备地址</param>
-    /// <param name="iPort">指定端口</param>
-    /// <returns>true成功，false失败</returns>
-
 
     /// <summary>
     /// 断开连接
@@ -277,15 +279,15 @@ public class Feedback {
     /// <summary>
     /// 接收返回的数据并解析处理
     /// </summary>
-    private void OnRecvData()
-    {
+    public void onRecvData() throws IOException {
         byte[] buffer = new byte[4320];//1440*3
+        socketClient = new Socket(ip,port);
         int iHasRead = 0;
         while (!socketClient.isClosed())
         {
             try
             {
-                int iRet = socketClient.getInputStream().read(buffer);
+                int iRet = socketClient.getInputStream().read(buffer,0, buffer.length);
                 if (iRet <= 0)
                 {
                     continue;
@@ -334,16 +336,14 @@ public class Feedback {
                 iHasRead = iHasRead - 1440;
                 //按照协议的格式解析数据
                 ParseData(buffer);
-                buffer = Arrays.copyOf(buffer, buffer.length - 1440);
-
-                Thread.sleep(100);
-
+                Arrays.copyOf(buffer, buffer.length - 1440);
             }
             catch (Exception ex)
             {
                 Logger.instance.log("recv thread:" + ex);
             }
         }
+        return;
     }
 
     private void ParseData(byte[] buffer)
@@ -657,6 +657,7 @@ public class Feedback {
         }
 
         this.DataHasRead = true;
+
     }
 
     public String convertRobotMode()

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TCP-IP Java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TCP_IP_Java_jar</output-path>
+    <root id="archive" name="TCP-IP Java.jar">
+      <element id="module-output" name="TCP-IP Java" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/resource/fastjson-1.2.47.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

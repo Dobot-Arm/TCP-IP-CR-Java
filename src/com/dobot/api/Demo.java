@@ -6,10 +6,7 @@ import com.dobot.api.entity.MovLEntity;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +29,9 @@ public class Demo extends JFrame{
     JTextField feedbackRyTextField;
     JTextField feedbackRzTextField;
 
+    JTextField currentSpeedRatioTextField;
+
+    JTextField robotModeTextField;
     public static void main(String[] args) {
         Demo demo = new Demo();
     }
@@ -167,21 +167,27 @@ public class Demo extends JFrame{
                             Logger.instance.log("Connect"+ip+"fail");
                             return;
                         }
-                        if(!feedback.connect(ip,Integer.valueOf(feedBackPortTextField.getText()))){
+
+                        if(!feedback.connect(ipAddressTextField.getText(),Integer.valueOf(feedBackPortTextField.getText()))){
                             Logger.instance.log("Connect"+ip+"fail");
                             return;
                         }
+
                         if(!dobotMove.connect(ip,Integer.valueOf(movePortTextField.getText()))){
                             Logger.instance.log("Connect"+ip+"fail");
                             return;
                         }
                         Logger.instance.log("Connect Success");
                         connectButton.setText("Disconnect");
+                        return;
                     }
                 };
+
+
                 thread.start();
 
             }
+
         });
 
 
@@ -292,6 +298,7 @@ public class Demo extends JFrame{
                     @Override
                     public void run(){
                         String reply = dashboard.enableRobot();
+                        return;
                     }
                 };
                 thread.start();
@@ -305,6 +312,7 @@ public class Demo extends JFrame{
                     @Override
                     public void run(){
                         String reply = dashboard.resetRobot();
+                        return;
                     }
                 };
                 thread.start();
@@ -318,6 +326,7 @@ public class Demo extends JFrame{
                     @Override
                     public void run(){
                         String reply = dashboard.clearError();
+                        return;
                     }
                 };
                 thread.start();
@@ -347,14 +356,6 @@ public class Demo extends JFrame{
             }
         });
 
-
-        //        JLabel digitalOutputsLabel;
-//        JLabel indexlabel;
-//        JTextField indexTextField;
-//        JLabel statusLabel;
-//        JComboBox statusComboBox;
-//        JButton confirmStatusButton;
-
         confirmStatusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -376,9 +377,8 @@ public class Demo extends JFrame{
                             }
                         }else {
                             Logger.instance.log("请输入正确的数字输出索引");
-                            return;
                         }
-
+                        return;
 
                     }
                 };
@@ -575,7 +575,7 @@ public class Demo extends JFrame{
                        boolean flag = isDataTrue(XTextField.getText(),YTextField.getText(),ZTextField.getText(),RxTextField.getText(),RyTextField.getText(),RzTextField.getText());
                        if(!flag){
                            Logger.instance.log("请输入正确的MovJ数据");
-                           return;
+
                        }
                         MovJEntity movJEntity = new MovJEntity();
                         movJEntity.X = Integer.valueOf(XTextField.getText());
@@ -585,8 +585,9 @@ public class Demo extends JFrame{
                         movJEntity.Ry = Integer.valueOf(RyTextField.getText());
                         movJEntity.Rz = Integer.valueOf(RzTextField.getText());
                         String reply = dobotMove.MovJ(movJEntity);
-
+                        return;
                     }
+
                 };
                 thread.start();
             }
@@ -611,7 +612,9 @@ public class Demo extends JFrame{
                         movLEntity.Ry = Integer.valueOf(RyTextField.getText());
                         movLEntity.Rz = Integer.valueOf(RzTextField.getText());
                         String reply = dobotMove.MovL(movLEntity);
+                        return;
                     }
+
                 };
                 thread.start();
             }
@@ -637,6 +640,7 @@ public class Demo extends JFrame{
                         jointMovJEntity.J5 = Integer.valueOf(J5TextField.getText());
                         jointMovJEntity.J6 = Integer.valueOf(J6TextField.getText());
                         String reply = dobotMove.JointMovJ(jointMovJEntity);
+                        return;
                     }
                 };
                 thread.start();
@@ -713,162 +717,216 @@ public class Demo extends JFrame{
 
 
         minus1Button = new JButton("J1-");
-        minus1Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minus1ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus1Button.addActionListener(minus1ButtonFeedbackButtonListeners);
+        minus1Button.addMouseListener(minus1ButtonFeedbackButtonListeners);
         minus1Button.setBounds(feedbackLabel.getX(),feedbackLabel.getY()+100,40,30);
         minus1Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus1Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minus2Button = new JButton("J2-");
+        FeedbackButtonListeners minus2ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus2Button.addActionListener(minus2ButtonFeedbackButtonListeners);
+        minus2Button.addMouseListener(minus2ButtonFeedbackButtonListeners);
+
+
         minus2Button.addActionListener(new FeedbackButtonListeners());
         minus2Button.setBounds(feedbackLabel.getX(),minus1Button.getY()+50,40,30);
         minus2Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus2Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minus3Button = new JButton("J3-");
-        minus3Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minus3ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus3Button.addActionListener(minus3ButtonFeedbackButtonListeners);
+        minus3Button.addMouseListener(minus3ButtonFeedbackButtonListeners);
+
         minus3Button.setBounds(feedbackLabel.getX(),minus2Button.getY()+50,40,30);
         minus3Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus3Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minus4Button = new JButton("J4-");
-        minus4Button.addActionListener(new FeedbackButtonListeners());
+
+        FeedbackButtonListeners minus4ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus4Button.addActionListener(minus4ButtonFeedbackButtonListeners);
+        minus4Button.addMouseListener(minus4ButtonFeedbackButtonListeners);
+
         minus4Button.setBounds(feedbackLabel.getX(),minus3Button.getY()+50,40,30);
         minus4Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus4Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
         minus5Button = new JButton("J5-");
-        minus5Button.addActionListener(new FeedbackButtonListeners());
+
+        FeedbackButtonListeners minus5ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus5Button.addActionListener(minus5ButtonFeedbackButtonListeners);
+        minus5Button.addMouseListener(minus5ButtonFeedbackButtonListeners);
         minus5Button.setBounds(feedbackLabel.getX(),minus4Button.getY()+50,40,30);
         minus5Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus5Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
         minus6Button = new JButton("J6-");
-        minus6Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minus6ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minus6Button.addActionListener(minus6ButtonFeedbackButtonListeners);
+        minus6Button.addMouseListener(minus6ButtonFeedbackButtonListeners);
         minus6Button.setBounds(feedbackLabel.getX(),minus5Button.getY()+50,40,30);
         minus6Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minus6Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
         add1Button = new JButton("J1+");
-        add1Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners add1ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add1Button.addActionListener(add1ButtonFeedbackButtonListeners);
+        add1Button.addMouseListener(add1ButtonFeedbackButtonListeners);
         add1Button.setBounds(feedbackLabel.getX()+190,feedbackLabel.getY()+100,40,30);
         add1Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add1Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add2Button  = new JButton("J2+");
+        FeedbackButtonListeners add2ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add2Button.addActionListener(add2ButtonFeedbackButtonListeners);
+        add2Button.addMouseListener(add2ButtonFeedbackButtonListeners);
         add2Button.addActionListener(new FeedbackButtonListeners());
         add2Button.setBounds(feedbackLabel.getX()+190,add1Button.getY()+50,40,30);
         add2Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add2Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add3Button  = new JButton("J3+");
-        add3Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners add3ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add3Button.addActionListener(add3ButtonFeedbackButtonListeners);
+        add3Button.addMouseListener(add3ButtonFeedbackButtonListeners);
         add3Button.setBounds(feedbackLabel.getX()+190,add2Button.getY()+50,40,30);
         add3Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add3Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add4Button  = new JButton("J4+");
-        add4Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners add4ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add4Button.addActionListener(add4ButtonFeedbackButtonListeners);
+        add4Button.addMouseListener(add4ButtonFeedbackButtonListeners);
         add4Button.setBounds(feedbackLabel.getX()+190,add3Button.getY()+50,40,30);
         add4Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add4Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add5Button  = new JButton("J5+");
-        add5Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners add5ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add5Button.addActionListener(add5ButtonFeedbackButtonListeners);
+        add5Button.addMouseListener(add5ButtonFeedbackButtonListeners);
         add5Button.setBounds(feedbackLabel.getX()+190,add4Button.getY()+50,40,30);
         add5Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add5Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         add6Button  = new JButton("J6+");
-        add6Button.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners add6ButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        add6Button.addActionListener(add6ButtonFeedbackButtonListeners);
+        add6Button.addMouseListener(add6ButtonFeedbackButtonListeners);
         add6Button.setBounds(feedbackLabel.getX()+190,add5Button.getY()+50,40,30);
         add6Button.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         add6Button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
         minusXButton  = new JButton("X-");
-        minusXButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minusXButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusXButton.addActionListener(minusXButtonFeedbackButtonListeners);
+        minusXButton.addMouseListener(minusXButtonFeedbackButtonListeners);
         minusXButton.setBounds(feedbackLabel.getX()+240,feedbackLabel.getY()+100,40,30);
         minusXButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusXButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minusYButton  = new JButton("Y-");
-        minusYButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minusYButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusYButton.addActionListener(minusYButtonFeedbackButtonListeners);
+        minusYButton.addMouseListener(minusYButtonFeedbackButtonListeners);
         minusYButton.setBounds(feedbackLabel.getX()+240,minusXButton.getY()+50,40,30);
         minusYButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusYButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minusZButton  = new JButton("Z-");
+        FeedbackButtonListeners minusZButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusZButton.addActionListener(minusZButtonFeedbackButtonListeners);
+        minusZButton.addMouseListener(minusZButtonFeedbackButtonListeners);
         minusZButton.addActionListener(new FeedbackButtonListeners());
         minusZButton.setBounds(feedbackLabel.getX()+240,minusYButton.getY()+50,40,30);
         minusZButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusZButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minusRxButton  = new JButton("Rx-");
-        minusRxButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minusRxButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusRxButton.addActionListener(minusRxButtonFeedbackButtonListeners);
+        minusRxButton.addMouseListener(minusRxButtonFeedbackButtonListeners);
         minusRxButton.setBounds(feedbackLabel.getX()+240,minusZButton.getY()+50,40,30);
         minusRxButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusRxButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minusRyButton  = new JButton("Ry-");
-        minusRyButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minusRyButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusRyButton.addActionListener(minusRyButtonFeedbackButtonListeners);
+        minusRyButton.addMouseListener(minusRyButtonFeedbackButtonListeners);
         minusRyButton.setBounds(feedbackLabel.getX()+240,minusRxButton.getY()+50,40,30);
         minusRyButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusRyButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         minusRzButton  = new JButton("Rz-");
-        minusRzButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners minusRzButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        minusRzButton.addActionListener(minusRzButtonFeedbackButtonListeners);
+        minusRzButton.addMouseListener(minusRzButtonFeedbackButtonListeners);
         minusRzButton.setBounds(feedbackLabel.getX()+240,minusRyButton.getY()+50,40,30);
         minusRzButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         minusRzButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addXButton  = new JButton("X+");
-        addXButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addXButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        addXButton.addActionListener(addXButtonFeedbackButtonListeners);
+        addXButton.addMouseListener(addXButtonFeedbackButtonListeners);
         addXButton.setBounds(feedbackLabel.getX()+400,feedbackLabel.getY()+100,40,30);
         addXButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addXButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addYButton  = new JButton("Y+");
-        addYButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addYButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        addYButton.addActionListener(addYButtonFeedbackButtonListeners);
+        addYButton.addMouseListener(addYButtonFeedbackButtonListeners);
         addYButton.setBounds(feedbackLabel.getX()+400,addXButton.getY()+50,40,30);
         addYButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addYButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addZButton = new JButton("Z+");
-        addZButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addZButtonFeedbackButtonListeners = new FeedbackButtonListeners();
+        addZButton.addActionListener(addZButtonFeedbackButtonListeners);
+        addZButton.addMouseListener(addZButtonFeedbackButtonListeners);
         addZButton.setBounds(feedbackLabel.getX()+400,addYButton.getY()+50,40,30);
         addZButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addZButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addRxButton = new JButton("Rx+");
-        addRxButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addRxButtonbackButtonListeners = new FeedbackButtonListeners();
+        addRxButton.addActionListener(addRxButtonbackButtonListeners);
+        addRxButton.addMouseListener(addRxButtonbackButtonListeners);
         addRxButton.setBounds(feedbackLabel.getX()+400,addZButton.getY()+50,40,30);
         addRxButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addRxButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addRyButton = new JButton("Ry+");
-        addRyButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addRyButtonListeners = new FeedbackButtonListeners();
+        addRyButton.addActionListener(addRyButtonListeners);
+        addRyButton.addMouseListener(addRyButtonListeners);
         addRyButton.setBounds(feedbackLabel.getX()+400,addRxButton.getY()+50,40,30);
         addRyButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addRyButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         addRzButton = new JButton("Rz+");
-        addRzButton.addActionListener(new FeedbackButtonListeners());
+        FeedbackButtonListeners addRzButtonListeners = new FeedbackButtonListeners();
+        addRzButton.addActionListener(addRzButtonListeners);
+        addRzButton.addMouseListener(addRzButtonListeners);
         addRzButton.setBounds(feedbackLabel.getX()+400,addRyButton.getY()+50,40,30);
         addRzButton.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         addRzButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-
-
+        
         mainPanel.add(minus1Button);
         mainPanel.add(minus2Button);
         mainPanel.add(minus3Button);
         mainPanel.add(minus4Button);
         mainPanel.add(minus5Button);
         mainPanel.add(minus6Button);
-
 
         mainPanel.add(add1Button);
         mainPanel.add(add2Button);
@@ -984,16 +1042,15 @@ public class Demo extends JFrame{
         mainPanel.add(feedbackRyTextField);
         mainPanel.add(feedbackRzTextField);
 
-        int currentSpeedRatio = 0;
-        JTextField currentSpeedRatioTextField = new JTextField("Current Speed Ratio: "+currentSpeedRatio+"%");
+
+        currentSpeedRatioTextField = new JTextField("Current Speed Ratio: "+feedback.SpeedScaling+"%");
         currentSpeedRatioTextField.setBounds(feedbackLabel.getX(),feedbackLabel.getY()+30,350,30);
         currentSpeedRatioTextField.setEditable(false);
         currentSpeedRatioTextField.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
         currentSpeedRatioTextField.setBorder(BorderFactory.createEmptyBorder());
 
 
-        String robotMode = "************************";
-        JTextField robotModeTextField = new JTextField("Robot Mode: "+robotMode);
+        robotModeTextField = new JTextField("Robot Mode: "+feedback.convertRobotMode());
         robotModeTextField.setBounds(feedbackLabel.getX(),feedbackLabel.getY()+60,350,30);
         robotModeTextField.setEditable(false);
         robotModeTextField.setFont(new Font (Font.DIALOG, Font.BOLD, 15));
@@ -1040,16 +1097,17 @@ public class Demo extends JFrame{
                       robotModeTextField.setText("Robot Mode:"+feedback.convertRobotMode());
                       digitalInputsTextField.setText("Digital Inputs:"+Long.toBinaryString(feedback.DigitalInputs));
                       digitalOutputsTextField.setText("Digital Outputs:"+Long.toBinaryString(feedback.DigitalOutputs));
+
                       Thread.sleep(100);
                   } catch (InterruptedException e) {
-                      throw new RuntimeException(e);
+                      Logger.instance.log(e.getMessage());
+                      return;
+
                   }
               }
-
           }
         };
         whileRunThread.start();
-
 
         JButton clearButton = new JButton("Clear");
         clearButton.setBounds(feedbackLabel.getX()+620,feedbackLabel.getY()+390,80,30);
@@ -1069,12 +1127,13 @@ public class Demo extends JFrame{
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                if("Disconnect".equals(connectButton.getText())){
+                if("Disconnect".equals(connectButton.getText())) {
+                    super.windowClosing(e);
                     dashboard.disconnect();
                     dobotMove.disconnect();
                     feedback.disconnect();
                 }
+                System.exit(1);
             }
         });
 
@@ -1139,19 +1198,37 @@ public class Demo extends JFrame{
         return true;
     }
 
-    class FeedbackButtonListeners implements ActionListener {
+    class FeedbackButtonListeners implements MouseListener,ActionListener{
+        String buttonName = null;
         @Override
         public void actionPerformed(ActionEvent e) {
-            Thread thread = new Thread(){
-                @Override
-                public void run(){
-                    String buttonName = e.getActionCommand();
-                    dobotMove.moveJog(buttonName);
-                    dobotMove.moveJog(null);
-                    return;
-                }
-            };
-            thread.start();
+            buttonName = e.getActionCommand();
+
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            AbstractButton EventSource = (AbstractButton)e.getSource();
+            dobotMove.moveJog(EventSource.getText());
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            dobotMove.moveJog(null);
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
         }
     }
 

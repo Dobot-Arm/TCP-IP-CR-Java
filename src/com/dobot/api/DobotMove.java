@@ -204,22 +204,22 @@ public class DobotMove {
 
     private boolean parseResult(String strResult)
     {
-        //strResult=ErrorID,{id1,id2,...},funcName(param1,param2,...)
         int iBegPos = strResult.indexOf('{');
         if (iBegPos < 0)
         {
             return false;
         }
-        int iEndPos = strResult.indexOf('}', iBegPos + 1);
+        int iEndPos = strResult.indexOf('}',
+                iBegPos + 1);
         if (iEndPos < 0)
         {
             return false;
         }
         boolean bOk = strResult.startsWith("0,");
-        if(iBegPos + 1>= iEndPos - iBegPos - 1){
+        if(iBegPos + 1>= iEndPos){
             return bOk;
         }
-        strResult = strResult.substring(iBegPos + 1, iEndPos - iBegPos - 1);
+        strResult = strResult.substring(iBegPos + 1, iEndPos);
         if (strResult == null || strResult.isEmpty())
         {
             return bOk;
@@ -242,11 +242,9 @@ public class DobotMove {
         {
             SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");//设置日期格式
             String strTime = "Time Stamp:"+df.format(new Date());// new Date()为获取当前系统时间
-            Logger.instance.error(strTime + "\r\n" + sb.toString());
         }
         return bOk;
     }
-
 
 
 
