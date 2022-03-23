@@ -2,8 +2,6 @@ package com.dobot.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -17,8 +15,6 @@ public class ErrorInfoHelper {
     private static Map<Integer, ErrorInfoBean> controllerBeans = new HashMap<>();
 
     private static Map<Integer, ErrorInfoBean> servoBeans = new HashMap<>();
-
-
     private static ErrorInfoHelper instance=new ErrorInfoHelper();
 
 
@@ -70,8 +66,27 @@ public class ErrorInfoHelper {
 
     }
 
+
     public static ErrorInfoHelper getInstance(){
-       return instance;
+        return instance;
+    }
+
+
+    public ErrorInfoBean findController(int id)
+    {
+        if (controllerBeans.containsKey(id))
+        {
+            return controllerBeans.get(id);
+        }
+        return null;
+    }
+    public ErrorInfoBean findServo(int id)
+    {
+        if (servoBeans.containsKey(id))
+        {
+            return servoBeans.get(id);
+        }
+        return null;
     }
 
     public boolean parseResult(String strResult)
@@ -97,20 +112,18 @@ public class ErrorInfoHelper {
             return bOk;
         }
         StringBuilder sb = new StringBuilder();
-        String[] all = strResult.split( "," , 0);
-
+        strResult = '[' + strResult+']';
         JSONArray jsonArray = JSONArray.parseArray(strResult);
 
         for(int i=0 ;i<jsonArray.size() ;i++){
 
-            JSONArray array = jsonArray.toJavaObject(JSONArray.class);
+            JSONArray array = ((JSONArray)jsonArray.get(i)).toJavaObject(JSONArray.class);
             for(int j=0 ;j<array.size(); j++){
-                ErrorInfoBean bean = null;
+                ErrorInfoBean bean = new ErrorInfoBean();
                 if(i == 0){
-                    bean = findController(array.toJavaObject(Integer.class));
-
+                    bean = findController((Integer) array.get(j));
                 }else {
-                    bean = findServo(array.toJavaObject(Integer.class));
+                    bean = findServo((Integer) array.get(j));
                 }
                 if (null != bean)
                 {
@@ -127,28 +140,8 @@ public class ErrorInfoHelper {
         {
             SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");//设置日期格式
             String strTime = "Time Stamp:"+df.format(new Date());// new Date()为获取当前系统时间
-            Logger.instance.error(strTime+"\r\n"+sb);
+            System.out.println(sb);
         }
         return bOk;
     }
-
-
-    public  ErrorInfoBean findController(int id)
-    {
-        if (controllerBeans.containsKey(id))
-        {
-            return controllerBeans.get(id);
-        }
-        return null;
-    }
-    public  ErrorInfoBean findServo(int id)
-    {
-        if (servoBeans.containsKey(id))
-        {
-            return servoBeans.get(id);
-        }
-        return null;
-    }
-
-
 }
