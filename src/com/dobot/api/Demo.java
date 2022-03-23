@@ -294,14 +294,28 @@ public class Demo extends JFrame{
         enableButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread thread = new Thread(){
-                    @Override
-                    public void run(){
-                        String reply = dashboard.enableRobot();
-                        return;
-                    }
-                };
-                thread.start();
+                if("Enable".equals(e.getActionCommand())){
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run(){
+                            String reply = dashboard.enableRobot();
+                            return;
+                        }
+                    };
+                    thread.start();
+                    enableButton.setText("Disable");
+                }else{
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run(){
+                            String reply = dashboard.disableRobot();
+                            return;
+                        }
+                    };
+                    thread.start();
+                    enableButton.setText("Enable");
+                }
+
             }
         });
 

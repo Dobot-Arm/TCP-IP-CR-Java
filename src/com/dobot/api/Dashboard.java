@@ -131,7 +131,7 @@ public class Dashboard {
         }
 
         String str = "DisableRobot()";
-        if(sendData(str)){
+        if(!sendData(str)){
             return str + SEND_ERROR;
         }
 
@@ -187,7 +187,7 @@ public class Dashboard {
             byte[] buffer = new byte[1024];				//缓冲
             int len = socketClient.getInputStream().read(buffer);//每次读取的长度（正常情况下是1024，最后一次可能不是1024，如果传输结束，返回-1）
             reply = new String(buffer,0,len,"UTF-8");
-            parseResult(reply);
+            ErrorInfoHelper.getInstance().parseResult(reply);
             Logger.instance.log("Receive from:"+this.ip+":"+socketClient.getPort()+":"+reply);
 
         } catch (IOException e) {
@@ -197,48 +197,5 @@ public class Dashboard {
         return reply;
     }
 
-    private boolean parseResult(String strResult)
-    {
-        int iBegPos = strResult.indexOf('{');
-        if (iBegPos < 0)
-        {
-            return false;
-        }
-        int iEndPos = strResult.indexOf('}',
-                iBegPos + 1);
-        if (iEndPos < 0)
-        {
-            return false;
-        }
-        boolean bOk = strResult.startsWith("0,");
-        if(iBegPos + 1>= iEndPos){
-            return bOk;
-        }
-        strResult = strResult.substring(iBegPos + 1, iEndPos);
-        if (strResult == null || strResult.isEmpty())
-        {
-            return bOk;
-        }
-        StringBuilder sb = new StringBuilder();
-        String[] all = strResult.split( "," , 0);
-
-        for(int i=0 ;i<all.length ;i++){
-            ErrorInfoBean bean = ErrorInfoHelper.getInstance().find(Integer.valueOf(all[i]));
-            if (null != bean)
-            {
-                sb.append("ID:" + bean.getId() + "\r\n");
-                sb.append("Type:"+bean.getType() + "\r\n");
-                sb.append("Level:"+bean.getLevel() + "\r\n");
-                sb.append("Solution:"+bean.getEn().solution + "\r\n");
-            }
-        }
-
-        if (sb.length() > 0)
-        {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");//设置日期格式
-            String strTime = "Time Stamp:"+df.format(new Date());// new Date()为获取当前系统时间
-        }
-        return bOk;
-    }
 
 }

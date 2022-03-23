@@ -1,6 +1,5 @@
 package com.dobot.api;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -11,7 +10,6 @@ public class Feedback {
     private static String SEND_ERROR = ":send error";
 
     Thread thread;
-
 
     private String ip = "";
 
