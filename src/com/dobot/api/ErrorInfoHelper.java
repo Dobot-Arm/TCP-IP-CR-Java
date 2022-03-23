@@ -140,7 +140,7 @@ public class ErrorInfoHelper {
         {
             SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");//设置日期格式
             String strTime = "Time Stamp:"+df.format(new Date());// new Date()为获取当前系统时间
-            System.out.println(sb);
+            Logger.instance.error(strTime+"\r\n"+sb);
         }
         return bOk;
     }
