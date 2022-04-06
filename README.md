@@ -40,8 +40,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
 ## 5.控制器版本
 可以使用TCP/IP协议的控制器版本如下：  
 
-- MG400： 1.5.4.0 及以上
-- CR： 3.5.1.9 及以上
+- CR： 3.5.2 及以上
 
 
 

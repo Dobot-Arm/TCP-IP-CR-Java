@@ -40,5 +40,4 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
 ## 5. Controller version
 The controller versions that can use the TCP/IP protocol are as follows:
 
-- MG400: 1.5.4.0 and above
-- CR: 3.5.1.9 and above
+- CR: 3.5.2 and above
